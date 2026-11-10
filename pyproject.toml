@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openevolab"
+version = "0.1.0"
+description = "Free, read-only BMW ENET diagnostic research tools"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["BMW", "ENET", "HSFZ", "NBT EVO", "diagnostics"]
+
+[project.scripts]
+openevolab = "openevolab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
