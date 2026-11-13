@@ -16,14 +16,18 @@ The preview uses local scripts, icons, and fonts, so its normal operation works 
 
 ## Review the draft
 
-- Drag the schematic F36 or use the camera buttons to change its angle.
+- Drag the F36-inspired model or use the camera buttons to change its angle.
 - Select the trunk, doors, lights, or powertrain hotspot to inspect its panel.
 - Preview the hatch and lighting illustrations.
 - Browse the demo music library and use the persistent playback controls.
 - Open Drive for sample thermal readings and engine speed.
 - Use Settings to preview demo, stale, and unavailable data, or change temperature units.
 
-All vehicle readings, media state, hatch actions, and lighting actions are simulated. The vehicle model is a schematic placeholder. The Navigate tab and vehicle lock control are visibly unavailable.
+All vehicle readings, media state, hatch actions, and lighting actions are simulated. The Navigate tab and vehicle lock control are visibly unavailable.
+
+The original procedural model follows the owner's My BMW screenshot as a visual reference: glossy black bodywork, a four-door fastback silhouette, chrome window trim, twin kidney grilles, LED lamp details, split-spoke wheels and brake discs. A local reflection studio lights the paint and glass. Selecting the powertrain reveals a translucent inspection view; the hatch and lamp previews remain interactive.
+
+This is an F36-inspired approximation, not BMW's production mesh or an exact equipment/configuration match. The screenshot and BMW app assets are not bundled. A properly licensed, production-quality F36 mesh remains a future replacement.
 
 Preview preferences are saved in browser storage for the current local origin. This includes the selected page, sample track, units, data presentation, and illustration states. Browser storage is optional.
 
@@ -31,9 +35,10 @@ Preview preferences are saved in browser storage for the current local origin. T
 
 - `index.html` contains the page structure.
 - `dashboard.css` contains product styles and responsive layouts.
-- `dashboard.js` owns the local demo state and procedural Three.js vehicle.
+- `dashboard.js` owns the local demo state, camera, and subsystem interactions.
+- `vehicle.js` builds the original Three.js model, materials, and reflection studio.
 - `vendor/` contains pinned dependencies, local fonts, and their licenses.
 
 The dashboard is a static design preview. Vehicle integration, real media playback, navigation, and a production F36 asset are follow-up work.
 
-The visual direction comes from the owner's supplied Roadster UI research brief. Album artwork and the schematic vehicle are original to this draft. See [third-party notices](THIRD_PARTY.md) for bundled libraries and fonts.
+The visual direction comes from the owner's supplied Roadster UI research brief. Album artwork and the procedural vehicle geometry are original to this draft. See [third-party notices](THIRD_PARTY.md) for bundled libraries and fonts.

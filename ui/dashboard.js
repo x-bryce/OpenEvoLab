@@ -11,7 +11,7 @@
     data: "demo",
     units: "c",
   };
-  const appearance = { accent: "#f12c35", surfaceOpacity: 0.24, grid: true };
+  const appearance = { accent: "#f12c35", grid: true };
   const tracks = [
     "After Hours",
     "Chrome Coast",
@@ -157,7 +157,7 @@
       icon: "door-open",
       title: "Trunk",
       caption: "Rear hatch / F36",
-      description: "Explore the hatch position on the vehicle schematic.",
+      description: "Explore the hatch position on the 3D vehicle model.",
       rows: [["Source", "Demo preview"]],
     },
     doors: {
@@ -391,425 +391,33 @@
     renderer.setClearColor(0x050607, 0);
     renderer.outputColorSpace = T.SRGBColorSpace;
     renderer.toneMapping = T.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.1;
     const scene = new T.Scene();
-    const camera = new T.PerspectiveCamera(34, 1, 0.1, 70);
+    const camera = new T.PerspectiveCamera(32, 1, 0.1, 70);
     const focus = new T.Vector3(0, 0.65, 0);
     const car = new T.Group();
     scene.add(car);
-    scene.add(new T.AmbientLight(0xced4e5, 1.5));
-    const key = new T.DirectionalLight(0xe4e8f3, 2.6);
-    key.position.set(4, 6, 5);
+    scene.add(new T.AmbientLight(0xd5deed, 0.6));
+    const key = new T.DirectionalLight(0xe4e8f3, 3.2);
+    key.position.set(4, 6, -5);
     scene.add(key);
-    const rim = new T.DirectionalLight(0xf12c35, 0.35);
-    rim.position.set(-5, 2, -4);
+    const rim = new T.DirectionalLight(0xf12c35, 0.5);
+    rim.position.set(-5, 2, 4);
     scene.add(rim);
-    const bodyMat = new T.MeshPhysicalMaterial({
-      color: 0x8994a3,
-      metalness: 0.5,
-      roughness: 0.39,
-      transparent: true,
-      opacity: appearance.surfaceOpacity,
-      depthWrite: false,
-      side: T.DoubleSide,
-    });
-    const glassMat = new T.MeshPhysicalMaterial({
-      color: 0x263143,
-      metalness: 0.3,
-      roughness: 0.24,
-      transparent: true,
-      opacity: 0.38,
-      depthWrite: false,
-      side: T.DoubleSide,
-    });
-    const frameMat = new T.LineBasicMaterial({
-      color: 0x8d98a6,
-      transparent: true,
-      opacity: 0.78,
-    });
-    const darkMat = new T.MeshStandardMaterial({
-      color: 0x111317,
-      roughness: 0.9,
-      metalness: 0.1,
-    });
-    const rimMat = new T.MeshStandardMaterial({
-      color: 0x828890,
-      roughness: 0.38,
-      metalness: 0.85,
-    });
-    const selectedMat = new T.LineBasicMaterial({
-      color: 0xf12c35,
-      transparent: true,
-      opacity: 0.93,
-    });
-    const highlighted = { trunk: [], doors: [], engine: [], lights: [] };
-    function line(points, material, parent) {
-      const geom = new T.BufferGeometry().setFromPoints(
-        points.map(function (p) {
-          return new T.Vector3(p[0], p[1], p[2]);
-        }),
-      );
-      const mesh = new T.Line(geom, material || frameMat);
-      (parent || car).add(mesh);
-      return mesh;
-    }
-    function box(w, h, d, x, y, z, mat, parent) {
-      const mesh = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
-      mesh.position.set(x, y, z);
-      (parent || car).add(mesh);
-      return mesh;
-    }
-    const profile = [
-      [-2.38, 0.65, 0.33, 0.64],
-      [-2.25, 0.81, 0.29, 0.8],
-      [-2.03, 0.85, 0.29, 0.89],
-      [-1.7, 0.86, 0.29, 0.91],
-      [-1.25, 0.87, 0.29, 0.92],
-      [-0.7, 0.87, 0.29, 0.92],
-      [0, 0.87, 0.29, 0.92],
-      [0.7, 0.84, 0.29, 0.91],
-      [1.3, 0.81, 0.29, 0.9],
-      [1.85, 0.78, 0.3, 0.88],
-      [2.16, 0.72, 0.33, 0.81],
-      [2.35, 0.64, 0.37, 0.67],
-    ];
-    const smoothProfile = new T.CatmullRomCurve3(
-      profile.map(function (s) {
-        return new T.Vector3(s[0], s[1], s[3]);
-      }),
-      false,
-      "catmullrom",
-      0.3,
-    );
-    const stations = smoothProfile.getPoints(70).map(function (p) {
-      return [p.x, p.y, 0.3, p.z];
-    });
-    const vertices = [],
-      indices = [],
-      rings = [];
-    stations.forEach(function (s, index) {
-      const x = s[0],
-        top = s[1],
-        bottom = s[2],
-        w = s[3];
-      const archX = Math.min(Math.abs(x + 1.56), Math.abs(x - 1.55));
-      const cut =
-        archX < 0.48 ? 0.4 + Math.sqrt(0.48 * 0.48 - archX * archX) : bottom;
-      const sideBottom = Math.min(Math.max(bottom, cut), top - 0.015);
-      const pts = [
-        [x, top, w * 0.76],
-        [x, top - 0.06, w * 0.97],
-        [x, Math.max(sideBottom, top - 0.2), w],
-        [x, sideBottom, w * 0.99],
-        [x, bottom, w * 0.75],
-        [x, bottom, -w * 0.75],
-        [x, sideBottom, -w * 0.99],
-        [x, Math.max(sideBottom, top - 0.2), -w],
-        [x, top - 0.06, -w * 0.97],
-        [x, top, -w * 0.76],
-      ];
-      rings.push(pts);
-      pts.forEach(function (p) {
-        vertices.push(p[0], p[1], p[2]);
-      });
-      if (index > 0)
-        for (let j = 0; j < 10; j++) {
-          const a = (index - 1) * 10 + j,
-            b = (index - 1) * 10 + ((j + 1) % 10),
-            c = index * 10 + j,
-            d = index * 10 + ((j + 1) % 10);
-          indices.push(a, c, b, b, c, d);
-        }
-    });
-    const geometry = new T.BufferGeometry();
-    geometry.setAttribute(
-      "position",
-      new T.Float32BufferAttribute(vertices, 3),
-    );
-    geometry.setIndex(indices);
-    geometry.computeVertexNormals();
-    car.add(new T.Mesh(geometry, bodyMat));
-    [0, 1, 3, 8, 9].forEach(function (i) {
-      line(
-        rings.map(function (r) {
-          return r[i];
-        }),
-      );
-    });
-    line(rings[0].concat([rings[0][0]]));
-    line(rings[rings.length - 1].concat([rings[rings.length - 1][0]]));
-    function shell(sections, material) {
-      const verts = [],
-        idx = [];
-      sections.forEach(function (s, i) {
-        [
-          [s[0], s[1], s[2]],
-          [s[0], s[3], s[4]],
-          [s[0], s[3], -s[4]],
-          [s[0], s[1], -s[2]],
-        ].forEach(function (p) {
-          verts.push.apply(verts, p);
-        });
-        if (i > 0)
-          for (let j = 0; j < 3; j++) {
-            const a = (i - 1) * 4 + j,
-              b = a + 1,
-              c = i * 4 + j,
-              d = c + 1;
-            idx.push(a, c, b, b, c, d);
-          }
-      });
-      const g = new T.BufferGeometry();
-      g.setAttribute("position", new T.Float32BufferAttribute(verts, 3));
-      g.setIndex(idx);
-      g.computeVertexNormals();
-      const m = new T.Mesh(g, material);
-      car.add(m);
-      return m;
-    }
-    const cabin = [
-      [-1.78, 0.86, 0.78, 0.91, 0.77],
-      [-1.28, 0.88, 0.8, 1.18, 0.65],
-      [-0.72, 0.88, 0.81, 1.38, 0.64],
-      [0.32, 0.87, 0.8, 1.37, 0.64],
-      [0.65, 0.85, 0.79, 1.25, 0.66],
-      [1.12, 0.81, 0.78, 0.85, 0.76],
-    ];
-    shell(cabin, glassMat);
-    [-1, 1].forEach(function (side) {
-      line(
-        cabin.map(function (s) {
-          return [s[0], s[3], s[4] * side];
-        }),
-      );
-      line(
-        cabin.map(function (s) {
-          return [s[0], s[1], s[2] * side];
-        }),
-      );
-      line(
-        [
-          [-0.35, 0.87, 0.81 * side],
-          [-0.35, 1.38, 0.64 * side],
-        ],
-        frameMat,
-      );
-      line(
-        [
-          [0.62, 0.85, 0.79 * side],
-          [0.62, 1.25, 0.66 * side],
-        ],
-        frameMat,
-      );
-      const front = line(
-        [
-          [-0.34, 1.37, 0.65 * side],
-          [-0.34, 0.46, 0.927 * side],
-          [0.91, 0.45, 0.915 * side],
-          [1.04, 0.79, 0.8 * side],
-        ],
-        frameMat,
-      );
-      const rear = line(
-        [
-          [-0.35, 1.37, 0.65 * side],
-          [-1.27, 1.17, 0.66 * side],
-          [-1.43, 0.83, 0.88 * side],
-          [-1.3, 0.44, 0.922 * side],
-          [-0.35, 0.45, 0.927 * side],
-        ],
-        frameMat,
-      );
-      highlighted.doors.push(front, rear);
-      box(0.21, 0.035, 0.028, 0.18, 0.79, 0.932 * side, rimMat);
-      box(0.17, 0.035, 0.028, -0.86, 0.8, 0.932 * side, rimMat);
-      const mirror = box(0.22, 0.1, 0.14, 0.84, 0.94, 0.99 * side, darkMat);
-      const mirrorEdge = new T.LineSegments(
-        new T.EdgesGeometry(mirror.geometry),
-        frameMat,
-      );
-      mirror.add(mirrorEdge);
-      line(
-        [
-          [1.12, 0.81, 0.78 * side],
-          [2.2, 0.71, 0.65 * side],
-        ],
-        frameMat,
-      );
-    });
-    line(
-      [
-        [-0.72, 1.38, 0.64],
-        [-0.72, 1.4, 0],
-        [-0.72, 1.38, -0.64],
-      ],
+    const model = globalThis.OpenEvoVehicle.create(T, renderer, scene);
+    car.add(model.car);
+    const {
+      bodyMat,
       frameMat,
-    );
-    line(
-      [
-        [0.32, 1.37, 0.64],
-        [0.32, 1.39, 0],
-        [0.32, 1.37, -0.64],
-      ],
-      frameMat,
-    );
-    const hatch = new T.Group();
-    hatch.position.set(-0.78, 1.34, 0);
-    car.add(hatch);
-    const hatchGeom = new T.BufferGeometry().setFromPoints([
-      new T.Vector3(0, 0, 0.63),
-      new T.Vector3(-0.65, -0.29, 0.75),
-      new T.Vector3(-1.51, -0.53, 0.79),
-      new T.Vector3(-1.51, -0.53, -0.79),
-      new T.Vector3(-0.65, -0.29, -0.75),
-      new T.Vector3(0, 0, -0.63),
-      new T.Vector3(0, 0, 0.63),
-    ]);
-    const hatchEdge = new T.Line(hatchGeom, frameMat);
-    hatch.add(hatchEdge);
-    highlighted.trunk.push(hatchEdge);
-    const hatchSurface = new T.BufferGeometry();
-    hatchSurface.setAttribute(
-      "position",
-      new T.Float32BufferAttribute(
-        [
-          0, 0, 0.63, -0.65, -0.29, 0.75, -1.51, -0.53, 0.79, 0, 0, -0.63,
-          -0.65, -0.29, -0.75, -1.51, -0.53, -0.79,
-        ],
-        3,
-      ),
-    );
-    hatchSurface.setIndex([0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4]);
-    hatchSurface.computeVertexNormals();
-    hatch.add(new T.Mesh(hatchSurface, glassMat));
-    const trunkStrip = box(0.025, 0.065, 1.5, -1.48, -0.48, 0, darkMat, hatch);
-    const wheels = [];
-    [-1.56, 1.55].forEach(function (x) {
-      [-1, 1].forEach(function (side) {
-        const group = new T.Group();
-        group.position.set(x, 0.42, 0.88 * side);
-        car.add(group);
-        const tyre = new T.Mesh(
-          new T.CylinderGeometry(0.43, 0.43, 0.24, 48, 1),
-          darkMat,
-        );
-        tyre.rotation.x = Math.PI / 2;
-        group.add(tyre);
-        const ring = new T.Mesh(
-          new T.TorusGeometry(0.33, 0.017, 7, 48),
-          rimMat,
-        );
-        ring.position.z = 0.13 * side;
-        group.add(ring);
-        const tireEdge = new T.Mesh(
-          new T.TorusGeometry(0.42, 0.008, 6, 48),
-          new T.MeshBasicMaterial({ color: 0x4f535e }),
-        );
-        tireEdge.position.z = 0.125 * side;
-        group.add(tireEdge);
-        const hub = new T.Mesh(
-          new T.CylinderGeometry(0.085, 0.085, 0.028, 20),
-          rimMat,
-        );
-        hub.rotation.x = Math.PI / 2;
-        hub.position.z = 0.14 * side;
-        group.add(hub);
-        for (let i = 0; i < 10; i++) {
-          const a = (i * Math.PI) / 5;
-          line(
-            [
-              [Math.cos(a) * 0.09, Math.sin(a) * 0.09, 0.145 * side],
-              [
-                Math.cos(a + 0.07) * 0.31,
-                Math.sin(a + 0.07) * 0.31,
-                0.145 * side,
-              ],
-            ],
-            new T.LineBasicMaterial({
-              color: 0xb3b5bc,
-              transparent: true,
-              opacity: 0.85,
-            }),
-            group,
-          );
-        }
-        wheels.push(group);
-      });
-    });
-    const engine = new T.Group();
-    engine.position.set(1.0, 0.72, 0);
-    car.add(engine);
-    const engineMat = new T.MeshStandardMaterial({
-      color: 0xb9a06c,
-      metalness: 0.65,
-      roughness: 0.38,
-      transparent: true,
-      opacity: 0.4,
-    });
-    box(0.72, 0.13, 0.62, 0, 0, 0, engineMat, engine);
-    for (let i = 0; i < 6; i++)
-      box(0.065, 0.045, 0.45, -0.27 + i * 0.1, 0.085, 0, engineMat, engine);
-    engine.visible = false;
-    const frontLampMat = new T.MeshBasicMaterial({
-      color: 0xc3d1df,
-      transparent: true,
-      opacity: 0.55,
-    });
-    const backLampMat = new T.MeshBasicMaterial({
-      color: 0xc53741,
-      transparent: true,
-      opacity: 0.5,
-    });
-    [-1, 1].forEach(function (side) {
-      box(0.035, 0.075, 0.43, 2.285, 0.66, 0.59 * side, frontLampMat);
-      line(
-        [
-          [2.31, 0.68, 0.41 * side],
-          [2.34, 0.61, 0.46 * side],
-          [2.34, 0.61, 0.59 * side],
-          [2.29, 0.68, 0.66 * side],
-        ],
-        frameMat,
-      );
-      line(
-        [
-          [2.29, 0.68, 0.64 * side],
-          [2.31, 0.61, 0.7 * side],
-          [2.26, 0.61, 0.79 * side],
-        ],
-        frameMat,
-      );
-      box(0.04, 0.065, 0.44, -2.285, 0.69, 0.59 * side, backLampMat);
-      line(
-        [
-          [-2.32, 0.7, 0.4 * side],
-          [-2.32, 0.65, 0.78 * side],
-          [-2.28, 0.58, 0.8 * side],
-        ],
-        new T.LineBasicMaterial({ color: 0x965158 }),
-      );
-      const grille = box(0.035, 0.17, 0.31, 2.35, 0.48, 0.19 * side, darkMat);
-      grille.add(
-        new T.LineSegments(new T.EdgesGeometry(grille.geometry), frameMat),
-      );
-      for (let i = 0; i < 5; i++)
-        box(0.045, 0.14, 0.008, 2.374, 0.48, (0.07 + i * 0.055) * side, rimMat);
-      box(0.1, 0.07, 0.18, -2.31, 0.28, 0.65 * side, rimMat);
-    });
-    line(
-      [
-        [-1.5, 0.25, 0.75],
-        [1.55, 0.25, 0.75],
-      ],
-      frameMat,
-    );
-    line(
-      [
-        [-1.5, 0.25, -0.75],
-        [1.55, 0.25, -0.75],
-      ],
-      frameMat,
-    );
+      selectedMat,
+      highlighted,
+      hatch,
+      engine,
+      engineEdge,
+      frontLampMat,
+      backLampMat,
+      seam,
+    } = model;
     const gridPositions = [];
     for (let x = -8; x <= 8; x += 0.42)
       for (let z = -7; z <= 7; z += 0.42) gridPositions.push(x, 0.005, z);
@@ -850,11 +458,11 @@
     shadow.position.y = 0.012;
     scene.add(shadow);
     const cameraState = {
-      angle: 0.65,
-      elevation: 0.23,
-      distance: 8.8,
-      targetAngle: 0.65,
-      targetElevation: 0.23,
+      angle: 2.5,
+      elevation: 0.21,
+      distance: 7.8,
+      targetAngle: 2.5,
+      targetElevation: 0.21,
     };
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -863,10 +471,10 @@
       selected = null;
     function hotspots() {
       const targets = {
-        trunk: [-1.95, 0.95, 0.4],
-        doors: [-0.15, 0.72, 1.02],
+        trunk: [-1.95, 0.95, -0.4],
+        doors: [-0.15, 0.72, -0.92],
         engine: [1.1, 1.0, 0],
-        lights: [2.33, 0.7, 0.57],
+        lights: [2.33, 0.7, -0.57],
       };
       const positioned = [];
       Object.keys(targets).forEach(function (part) {
@@ -975,17 +583,26 @@
       if (width < 1 || height < 1) return;
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.fov = width < 450 ? 40 : 34;
+      camera.fov = width < 450 ? 40 : 32;
+      cameraState.distance = Math.max(
+        7.8,
+        2.75 / (Math.tan(T.MathUtils.degToRad(camera.fov / 2)) * camera.aspect),
+      );
       camera.updateProjectionMatrix();
       invalidate();
     }
     function update() {
-      bodyMat.opacity =
-        selected === "engine" ? 0.13 : appearance.surfaceOpacity;
-      engine.visible = selected === "engine";
-      engineMat.opacity = 0.85;
+      const inspectEngine = selected === "engine";
+      if (bodyMat.transparent !== inspectEngine) {
+        bodyMat.transparent = inspectEngine;
+        bodyMat.depthWrite = !inspectEngine;
+        bodyMat.needsUpdate = true;
+      }
+      bodyMat.opacity = inspectEngine ? 0.17 : 1;
+      engine.visible = inspectEngine;
+      engineEdge.visible = inspectEngine;
       frontLampMat.color.setHex(
-        state.lightsOn ? 0xe5efff : selected === "lights" ? 0xf12c35 : 0x9da7b6,
+        state.lightsOn ? 0xe5efff : selected === "lights" ? 0xf12c35 : 0x92a1b2,
       );
       frontLampMat.opacity = state.lightsOn || selected === "lights" ? 1 : 0.4;
       backLampMat.opacity = state.lightsOn ? 1 : 0.35;
@@ -998,15 +615,16 @@
       selected = part;
       Object.keys(highlighted).forEach(function (key) {
         highlighted[key].forEach(function (mesh) {
-          mesh.material = key === part ? selectedMat : frameMat;
+          mesh.material =
+            key === part ? selectedMat : key === "doors" ? seam : frameMat;
         });
       });
       if (part === "trunk") {
-        cameraState.targetAngle = -0.95;
+        cameraState.targetAngle = 3.95;
         cameraState.targetElevation = 0.29;
       }
       if (part === "lights" || part === "engine") {
-        cameraState.targetAngle = 0.65;
+        cameraState.targetAngle = 2.5;
         cameraState.targetElevation = part === "engine" ? 0.39 : 0.23;
       }
       if (part === "trunk" || part === "lights" || part === "engine")
@@ -1061,7 +679,7 @@
       select: select,
       camera: function (view) {
         cameraState.targetAngle =
-          view === "rear" ? -0.98 : view === "side" ? 0 : 0.65;
+          view === "rear" ? 3.95 : view === "side" ? Math.PI : 2.5;
         cameraState.targetElevation = view === "side" ? 0.13 : 0.23;
         markCamera(view);
         invalidate();
