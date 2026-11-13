@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="OpenEvoLab dashboard design preview with a schematic F36, simulated telemetry, and demo controls."
+      content="OpenEvoLab dashboard design preview with a detailed F36-inspired model, simulated telemetry, and demo controls."
     />
     <meta
       http-equiv="Content-Security-Policy"
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="./dashboard.css" />
     <script defer src="./vendor/three-0.160.0.min.js"></script>
     <script defer src="./vendor/lucide-0.468.0.min.js"></script>
+    <script defer src="./vehicle.js"></script>
     <script defer src="./dashboard.js"></script>
   </head>
   <body>
@@ -76,7 +77,7 @@
           <div
             id="oe-car-stage"
             class="oe-scene"
-            aria-label="Interactive schematic F36 Gran Coupe"
+            aria-label="Interactive F36-inspired Gran Coupe"
           >
             <div class="oe-scene-heading">
               <h1>440i GRAN COUPÉ</h1>
@@ -84,7 +85,7 @@
             </div>
             <canvas
               id="oe-car-canvas"
-              aria-label="Rotatable schematic of a four-door BMW F36 Gran Coupe. Use the camera buttons or select a labeled subsystem."
+              aria-label="Rotatable F36-inspired four-door Gran Coupe model. Use the camera buttons or select a labeled subsystem."
             ></canvas>
             <svg class="oe-callouts" aria-hidden="true">
               <g data-leader="trunk">
@@ -144,9 +145,7 @@
               <span class="oe-hotspot-dot"></span><span>Lights</span>
             </button>
             <div class="oe-scene-bottom">
-              <span class="oe-scene-caption"
-                >F36 schematic · Drag to orbit</span
-              >
+              <span class="oe-scene-caption">F36 exterior · Drag to orbit</span>
               <div class="oe-camera" role="group" aria-label="Vehicle camera">
                 <button type="button" data-camera="front" aria-pressed="true">
                   3/4
