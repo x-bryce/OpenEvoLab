@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="OpenEvoLab dashboard design preview with a schematic F36, simulated telemetry, and demo controls."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>OpenEvoLab dashboard preview</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./vendor/fonts.css" />
+    <link rel="stylesheet" href="./dashboard.css" />
+    <script defer src="./vendor/three-0.160.0.min.js"></script>
+    <script defer src="./vendor/lucide-0.468.0.min.js"></script>
+    <script defer src="./dashboard.js"></script>
+  </head>
+  <body>
+    <div
+      id="oe-roadster"
+      aria-label="OpenEvoLab Roadster-inspired dashboard draft"
+    >
+      <header class="oe-top">
+        <div class="oe-brand">
+          <span class="oe-brand-mark" aria-hidden="true"></span>OPENEVOLAB
+        </div>
+        <span class="oe-model">440i GRAN COUPÉ</span>
+        <span class="oe-demo" id="oe-data-label">DEMO DATA</span>
+        <span class="oe-clock">12:40</span>
+      </header>
+      <div class="oe-body">
+        <section id="oe-home" class="oe-home" aria-label="Vehicle home">
+          <aside class="oe-rail" aria-label="Simulated parked vehicle status">
+            <span class="oe-gear">P</span>
+            <div class="oe-speed">
+              <strong data-reading="speed">0</strong><span>MPH</span>
+            </div>
+            <i data-lucide="car-front" aria-hidden="true"></i>
+            <div class="oe-rail-base">
+              <i data-lucide="fuel" aria-hidden="true"></i
+              ><span class="oe-label" data-reading="fuel">62%</span>
+            </div>
+          </aside>
+          <aside class="oe-context" aria-label="Vehicle context">
+            <div id="oe-overview">
+              <div class="oe-context-title">
+                <span class="oe-label">Now playing</span
+                ><i
+                  data-lucide="music-2"
+                  style="width: 13px; height: 13px; color: #a2767e"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <div
+                class="oe-cover"
+                role="img"
+                aria-label="Original abstract sample album art, After Hours"
+              >
+                <span class="oe-cover-words"
+                  >AFTER<br />HOURS<small>OPENEVOLAB SESSIONS</small></span
+                >
+              </div>
+              <div class="oe-track-title" data-track-title>After Hours</div>
+              <div class="oe-track-artist">OpenEvo Sessions · Demo library</div>
+              <div class="oe-media-line" aria-hidden="true"></div>
+              <div class="oe-media-time">
+                <span>01:29</span><span>03:52</span>
+              </div>
+            </div>
+            <div id="oe-detail" hidden aria-live="polite"></div>
+          </aside>
+          <div
+            id="oe-car-stage"
+            class="oe-scene"
+            aria-label="Interactive schematic F36 Gran Coupe"
+          >
+            <div class="oe-scene-heading">
+              <h1>440i GRAN COUPÉ</h1>
+              <p>F36 <em> / </em> B58 <em> / </em> 2018</p>
+            </div>
+            <canvas
+              id="oe-car-canvas"
+              aria-label="Rotatable schematic of a four-door BMW F36 Gran Coupe. Use the camera buttons or select a labeled subsystem."
+            ></canvas>
+            <svg class="oe-callouts" aria-hidden="true">
+              <g data-leader="trunk">
+                <line></line>
+                <circle r="2"></circle>
+              </g>
+              <g data-leader="doors">
+                <line></line>
+                <circle r="2"></circle>
+              </g>
+              <g data-leader="engine">
+                <line></line>
+                <circle r="2"></circle>
+              </g>
+              <g data-leader="lights">
+                <line></line>
+                <circle r="2"></circle>
+              </g>
+            </svg>
+            <div id="oe-car-fallback" class="oe-fallback" hidden>
+              Vehicle scene unavailable in this browser.
+            </div>
+            <button
+              class="oe-hotspot"
+              data-part="trunk"
+              style="left: 25%; top: 43%"
+              aria-label="Inspect trunk"
+              aria-pressed="false"
+            >
+              <span class="oe-hotspot-dot"></span><span>Trunk</span>
+            </button>
+            <button
+              class="oe-hotspot"
+              data-part="doors"
+              style="left: 50%; top: 63%"
+              aria-label="Inspect doors"
+              aria-pressed="false"
+            >
+              <span class="oe-hotspot-dot"></span><span>Doors</span>
+            </button>
+            <button
+              class="oe-hotspot"
+              data-part="engine"
+              style="left: 65%; top: 40%"
+              aria-label="Inspect powertrain"
+              aria-pressed="false"
+            >
+              <span class="oe-hotspot-dot"></span><span>Powertrain</span>
+            </button>
+            <button
+              class="oe-hotspot"
+              data-part="lights"
+              style="left: 82%; top: 62%"
+              aria-label="Inspect lighting"
+              aria-pressed="false"
+            >
+              <span class="oe-hotspot-dot"></span><span>Lights</span>
+            </button>
+            <div class="oe-scene-bottom">
+              <span class="oe-scene-caption"
+                >F36 schematic · Drag to orbit</span
+              >
+              <div class="oe-camera" role="group" aria-label="Vehicle camera">
+                <button type="button" data-camera="front" aria-pressed="true">
+                  3/4
+                </button>
+                <button type="button" data-camera="side" aria-pressed="false">
+                  Side
+                </button>
+                <button type="button" data-camera="rear" aria-pressed="false">
+                  Rear
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="oe-listen" class="oe-page" aria-label="Listen" hidden>
+          <div class="oe-page-head">
+            <div>
+              <h1>LISTEN</h1>
+              <p>Your soundtrack, within reach.</p>
+            </div>
+            <span class="oe-mini-tag">DEMO LIBRARY</span>
+          </div>
+          <div class="oe-listen-hero">
+            <div
+              class="oe-cover"
+              role="img"
+              aria-label="Abstract sample album artwork"
+            >
+              <span class="oe-cover-words"
+                >AFTER<br />HOURS<small>OPENEVOLAB SESSIONS</small></span
+              >
+            </div>
+            <div>
+              <p class="oe-label">Selected track</p>
+              <h2 data-track-title>After Hours</h2>
+              <p class="oe-track-artist">OpenEvo Sessions</p>
+              <button
+                class="oe-action"
+                data-play
+                aria-label="Play demo track"
+                aria-pressed="false"
+              >
+                <i data-lucide="play" aria-hidden="true"></i
+                ><span>Play preview</span>
+              </button>
+              <p class="oe-note">Playback controls are simulated.</p>
+            </div>
+            <div class="oe-listen-end">
+              <span class="oe-label">Queue</span>
+              <p style="margin-top: 10px">Night drive</p>
+              <p class="oe-note">5 demo tracks</p>
+            </div>
+          </div>
+          <p class="oe-label oe-recents-heading">Recently played</p>
+          <div class="oe-recents">
+            <button class="oe-album" data-track="0">
+              <span class="oe-album-art"></span><strong>After Hours</strong
+              ><small>OpenEvo Sessions</small>
+            </button>
+            <button class="oe-album" data-track="1">
+              <span class="oe-album-art"></span><strong>Chrome Coast</strong
+              ><small>OpenEvo Sessions</small>
+            </button>
+            <button class="oe-album" data-track="2">
+              <span class="oe-album-art"></span><strong>Concrete Lines</strong
+              ><small>OpenEvo Sessions</small>
+            </button>
+            <button class="oe-album" data-track="3">
+              <span class="oe-album-art"></span><strong>Lowlight</strong
+              ><small>OpenEvo Sessions</small>
+            </button>
+            <button class="oe-album" data-track="4">
+              <span class="oe-album-art"></span><strong>Long Way Home</strong
+              ><small>OpenEvo Sessions</small>
+            </button>
+          </div>
+        </section>
+        <section
+          id="oe-drive"
+          class="oe-page"
+          aria-label="Drive telemetry"
+          hidden
+        >
+          <div class="oe-page-head">
+            <div>
+              <h1>ENGINE / THERMAL</h1>
+              <p id="oe-reading-age">Simulated sample · Engine idling</p>
+            </div>
+            <span class="oe-mini-tag">B58 / DEMO</span>
+          </div>
+          <div class="oe-drive-grid">
+            <div>
+              <div class="oe-readout">
+                <div class="oe-reading-line">
+                  <span class="oe-label">Oil temp</span
+                  ><strong
+                    ><span data-reading="oil">96</span><small>°C</small></strong
+                  >
+                </div>
+                <div class="oe-meter"><span style="width: 58%"></span></div>
+              </div>
+              <div class="oe-readout">
+                <div class="oe-reading-line">
+                  <span class="oe-label">Coolant</span
+                  ><strong
+                    ><span data-reading="coolant">87</span
+                    ><small>°C</small></strong
+                  >
+                </div>
+                <div class="oe-meter"><span style="width: 51%"></span></div>
+              </div>
+              <div class="oe-readout">
+                <div class="oe-reading-line">
+                  <span class="oe-label">Intake air</span
+                  ><strong
+                    ><span data-reading="intake">31</span
+                    ><small>°C</small></strong
+                  >
+                </div>
+                <div class="oe-meter"><span style="width: 24%"></span></div>
+              </div>
+            </div>
+            <div class="oe-rpm-panel">
+              <span class="oe-label">Engine speed</span>
+              <div>
+                <div class="oe-rpm-value" data-reading="rpm">740</div>
+                <div class="oe-rpm-unit">REVOLUTIONS / MINUTE</div>
+              </div>
+              <div>
+                <div class="oe-rpm-arc" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span
+                  ><span></span><span></span><span></span><span></span
+                  ><span></span>
+                </div>
+                <div class="oe-rpm-scale">
+                  <span>0</span><span>2,000</span><span>4,000</span
+                  ><span>7,000</span>
+                </div>
+              </div>
+            </div>
+            <div class="oe-drive-status">
+              <p class="oe-label">Session</p>
+              <div class="oe-status-row">
+                <span class="oe-label">Data source</span
+                ><strong class="oe-gold" id="oe-source-name"
+                  >Demo adapter</strong
+                >
+              </div>
+              <div class="oe-status-row">
+                <span class="oe-label">Battery</span
+                ><strong><span data-reading="battery">13.9</span> V</strong>
+              </div>
+              <div class="oe-status-row">
+                <span class="oe-label">Fault memory</span
+                ><strong>Not scanned</strong>
+              </div>
+              <div class="oe-status-row">
+                <span class="oe-label">Logging</span><strong>Off</strong>
+              </div>
+              <button class="oe-action" data-open-settings>
+                <i data-lucide="sliders-horizontal" aria-hidden="true"></i
+                >Configure view
+              </button>
+            </div>
+          </div>
+        </section>
+        <section
+          id="oe-settings"
+          class="oe-page"
+          aria-label="Dashboard settings"
+          hidden
+        >
+          <div class="oe-page-head">
+            <div>
+              <h1>SETTINGS</h1>
+              <p>Display and demo source.</p>
+            </div>
+            <span class="oe-mini-tag">APP SETTINGS</span>
+          </div>
+          <div class="oe-settings-grid">
+            <div>
+              <div class="oe-setting-row">
+                <label for="oe-data-state">Data presentation</label
+                ><select id="oe-data-state">
+                  <option value="demo">Demo sample</option>
+                  <option value="stale">Stale sample</option>
+                  <option value="unavailable">Unavailable</option>
+                </select>
+                <p class="oe-note">
+                  Preview how the dashboard handles missing data.
+                </p>
+              </div>
+              <div class="oe-setting-row">
+                <label for="oe-units">Temperature units</label
+                ><select id="oe-units">
+                  <option value="c">Celsius</option>
+                  <option value="f">Fahrenheit</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <p class="oe-label">Connection</p>
+              <div class="oe-status-list">
+                <div class="oe-status-row">
+                  <span>Vehicle</span><strong>Not connected</strong>
+                </div>
+                <div class="oe-status-row">
+                  <span>Source</span><strong>Simulated readings</strong>
+                </div>
+                <div class="oe-status-row">
+                  <span>Vehicle commands</span><strong>Preview only</strong>
+                </div>
+              </div>
+              <p class="oe-settings-copy" style="margin-top: 20px">
+                Trunk and lighting previews change the illustration. Media
+                controls change the demo state.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer class="oe-footer">
+        <div
+          class="oe-footer-player"
+          aria-label="Persistent demo media controls"
+        >
+          <div class="oe-player-track">
+            <strong data-track-title>After Hours</strong
+            ><small>Demo playback</small>
+          </div>
+          <div class="oe-media-buttons">
+            <button
+              class="oe-icon-button"
+              data-skip="-1"
+              aria-label="Previous demo track"
+            >
+              <i data-lucide="skip-back" aria-hidden="true"></i>
+            </button>
+            <button
+              class="oe-icon-button oe-play"
+              data-play
+              aria-label="Play demo track"
+              aria-pressed="false"
+            >
+              <i data-lucide="play" aria-hidden="true"></i>
+            </button>
+            <button
+              class="oe-icon-button"
+              data-skip="1"
+              aria-label="Next demo track"
+            >
+              <i data-lucide="skip-forward" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <nav class="oe-nav" aria-label="Main navigation">
+          <button data-page="home" aria-current="true">
+            <i data-lucide="car-front" aria-hidden="true"></i><span>HOME</span>
+          </button>
+          <button data-page="listen" aria-current="false">
+            <i data-lucide="music-2" aria-hidden="true"></i><span>LISTEN</span>
+          </button>
+          <button data-page="drive" aria-current="false">
+            <i data-lucide="gauge" aria-hidden="true"></i><span>DRIVE</span>
+          </button>
+          <button disabled aria-label="Navigate, integration unavailable">
+            <i data-lucide="navigation" aria-hidden="true"></i
+            ><span>NAVIGATE</span>
+          </button>
+          <button data-page="settings" aria-current="false">
+            <i data-lucide="settings-2" aria-hidden="true"></i
+            ><span>SETTINGS</span>
+          </button>
+        </nav>
+        <span class="oe-link-state"
+          ><i data-lucide="plug-zap" aria-hidden="true"></i>OFFLINE</span
+        >
+      </footer>
+      <p id="oe-announcer" class="oe-status-announcer" aria-live="polite"></p>
+    </div>
+  </body>
+</html>
