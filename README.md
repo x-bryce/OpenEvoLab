@@ -6,6 +6,16 @@ Free, cross-platform **read-only** BMW ENET/HSFZ diagnostic research tools, with
 
 **Not yet supported:** enabling full-screen CarPlay, modifying FDL coding, writing FSC licenses, updating firmware, patching binaries, or flashing a head unit. No commercial activation package has been reverse engineered or copied.
 
+## Dashboard preview
+
+The [interactive dashboard draft](ui/README.md) includes a schematic F36 Gran Coupe, simulated telemetry and media, and preview-only trunk and lighting controls. It runs locally with Python's static server and bundled browser assets.
+
+```bash
+python3 -m http.server 8000 --bind 127.0.0.1 --directory ui
+```
+
+Open [the local preview](http://127.0.0.1:8000).
+
 ## Field-tested starting point
 
 A contributor's 2018 BMW 440i with iDrive 6 and `NBTevo_Q18491I`, an MHD Wi-Fi adapter broadcasting `MHD ENET`, and an M3 MacBook Air returned a successful ENET discovery and an NBT EVO diagnostic identification response using the read-only request reproduced in this CLI. **The CLI itself is not yet field-tested as a package.**
