@@ -131,11 +131,6 @@ body {
   background: currentColor;
   border-radius: 50%;
 }
-#oe-roadster .oe-clock {
-  color: var(--oe-muted);
-  font-variant-numeric: tabular-nums;
-  font-size: 11px;
-}
 #oe-roadster .oe-body {
   min-height: 482px;
 }
@@ -152,29 +147,6 @@ body {
   padding: 25px 6px 19px;
   gap: 23px;
 }
-#oe-roadster .oe-gear {
-  font-family: Rajdhani, Arial, sans-serif;
-  font-size: 40px;
-  line-height: 1;
-  color: var(--oe-red);
-}
-#oe-roadster .oe-speed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-#oe-roadster .oe-speed strong {
-  font:
-    500 29px/1 Rajdhani,
-    Arial,
-    sans-serif;
-}
-#oe-roadster .oe-speed span {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--oe-muted);
-}
 #oe-roadster .oe-rail svg {
   width: 18px;
   height: 18px;
@@ -187,6 +159,24 @@ body {
   align-items: center;
   gap: 8px;
   flex-direction: column;
+}
+#oe-roadster .oe-rail-model {
+  font:
+    500 21px/1 Rajdhani,
+    Arial,
+    sans-serif;
+  color: var(--oe-text);
+  letter-spacing: 0.06em;
+}
+#oe-roadster .oe-rail-engine {
+  font-size: 11px;
+  color: var(--oe-muted);
+  letter-spacing: 0.08em;
+}
+#oe-roadster .oe-context-title > svg {
+  width: 15px;
+  height: 15px;
+  color: var(--oe-red);
 }
 #oe-roadster .oe-context {
   padding: 26px 22px 20px;
@@ -215,128 +205,6 @@ body {
     Arial,
     sans-serif;
   margin: 12px 0 4px;
-}
-#oe-roadster .oe-cover {
-  aspect-ratio: 1;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  background: radial-gradient(
-    ellipse at 50% 65%,
-    #b43d4f 0,
-    #532036 21%,
-    #1c1727 48%,
-    #0c111b 76%
-  );
-  border: 1px solid #38212d;
-}
-#oe-roadster .oe-cover:before {
-  content: "";
-  position: absolute;
-  width: 60%;
-  height: 60%;
-  left: 20%;
-  top: 22%;
-  border: 1px solid #f5b1a688;
-  border-radius: 50%;
-  box-shadow:
-    0 0 24px #e34b5866,
-    inset 0 0 20px #e34b5833;
-}
-#oe-roadster .oe-cover:after {
-  content: "";
-  position: absolute;
-  height: 37%;
-  width: 160%;
-  left: -30%;
-  bottom: -5%;
-  background: linear-gradient(
-    176deg,
-    transparent 4%,
-    #c07b9955 5%,
-    #161326 7%,
-    #090c16 75%
-  );
-  transform: perspective(70px) rotateX(20deg);
-}
-#oe-roadster .oe-cover-words {
-  position: absolute;
-  z-index: 1;
-  left: 14px;
-  top: 13px;
-  font:
-    500 17px/1 Rajdhani,
-    sans-serif;
-  letter-spacing: 0.2em;
-  color: #e5d0d1;
-}
-#oe-roadster .oe-cover-words small {
-  display: block;
-  margin-top: 5px;
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  color: #cb9da5;
-}
-#oe-roadster .oe-track-title {
-  font-size: 16px;
-  font-weight: 500;
-  margin-top: 13px;
-}
-#oe-roadster .oe-track-artist {
-  font-size: 11px;
-  color: var(--oe-muted);
-  margin-top: 4px;
-}
-#oe-roadster .oe-media-line {
-  height: 2px;
-  width: 100%;
-  background: #35191f;
-  margin-top: 15px;
-  position: relative;
-}
-#oe-roadster .oe-media-line:before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 38%;
-  background: var(--oe-red);
-}
-#oe-roadster .oe-media-time {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 5px;
-  font-size: 11px;
-  color: var(--oe-muted);
-  font-variant-numeric: tabular-nums;
-}
-#oe-roadster .oe-media-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-top: 11px;
-}
-#oe-roadster .oe-icon-button {
-  border: 0;
-  background: transparent;
-  width: 30px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: var(--oe-red);
-}
-#oe-roadster .oe-icon-button svg {
-  width: 17px;
-  height: 17px;
-  stroke-width: 1.5;
-}
-#oe-roadster .oe-icon-button.oe-play {
-  height: 34px;
-  width: 42px;
-  border: 1px solid var(--oe-line);
-  background: #170a0e;
 }
 #oe-roadster .oe-scene {
   position: relative;
@@ -550,46 +418,33 @@ body {
   display: flex;
   min-height: 65px;
 }
-#oe-roadster .oe-footer-player {
-  width: 282px;
+#oe-roadster .oe-connection {
+  width: 250px;
   flex-shrink: 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  padding: 0 16px;
+  gap: 12px;
+  padding: 12px 20px;
   border-right: 1px solid var(--oe-line-soft);
 }
-#oe-roadster .oe-player-track {
-  min-width: 0;
+#oe-roadster .oe-connection > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--oe-muted);
 }
-#oe-roadster .oe-player-track strong {
+#oe-roadster .oe-connection strong,
+#oe-roadster .oe-connection span {
   display: block;
   font-size: 11px;
   font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 125px;
 }
-#oe-roadster .oe-player-track small {
-  display: block;
-  font-size: 11px;
+#oe-roadster .oe-connection span {
   color: var(--oe-muted);
-}
-#oe-roadster .oe-footer-player .oe-media-buttons {
-  margin: 0;
-  gap: 3px;
-}
-#oe-roadster .oe-footer-player .oe-icon-button {
-  width: 27px;
-}
-#oe-roadster .oe-footer-player .oe-play {
-  width: 33px;
+  margin-top: 2px;
 }
 #oe-roadster .oe-nav {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   flex: 1;
   min-width: 0;
   padding: 0 7px;
@@ -663,108 +518,38 @@ body {
   letter-spacing: 0.12em;
   padding: 5px 8px;
 }
-#oe-roadster .oe-listen-hero {
+#oe-roadster .oe-diagnostics-grid {
   display: grid;
-  grid-template-columns: 168px minmax(0, 1fr) 180px;
-  align-items: center;
-  gap: 28px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
 }
-#oe-roadster .oe-listen-hero h2 {
+#oe-roadster .oe-fault-empty {
+  padding: 30px;
+  background: radial-gradient(ellipse at 50% 25%, #25101580, transparent 75%);
+  border: 1px solid var(--oe-line-soft);
+}
+#oe-roadster .oe-fault-empty > svg {
+  width: 38px;
+  height: 38px;
+  color: var(--oe-red);
+  stroke-width: 1;
+  margin-bottom: 22px;
+}
+#oe-roadster .oe-fault-empty h2 {
   font:
-    500 42px/1.1 Rajdhani,
+    500 30px/1.2 Rajdhani,
+    Arial,
     sans-serif;
-  letter-spacing: 0.05em;
-  margin-bottom: 6px;
+  margin-top: 9px;
 }
-#oe-roadster .oe-listen-hero .oe-action {
-  width: auto;
-  display: inline-flex;
-  margin-top: 20px;
-  min-width: 130px;
-}
-#oe-roadster .oe-listen-hero .oe-label {
-  margin-bottom: 11px;
-  color: #ba7f87;
-}
-#oe-roadster .oe-listen-end {
-  color: #89717a;
-  font-size: 11px;
-  border-left: 1px solid var(--oe-line);
-  padding-left: 24px;
-}
-#oe-roadster .oe-recents {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 15px;
-  margin-top: 14px;
-}
-#oe-roadster .oe-recents-heading {
-  margin-top: 24px;
-}
-#oe-roadster .oe-album {
-  border: 0;
-  background: transparent;
-  text-align: left;
-  padding: 0;
-  min-width: 0;
-}
-#oe-roadster .oe-album-art {
-  height: 64px;
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #492b37;
-  background:
-    radial-gradient(ellipse at 65% 100%, #c43e47, transparent 50%),
-    linear-gradient(140deg, #101722, #55324a);
-}
-#oe-roadster .oe-album-art:after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 52%;
-  height: 1px;
-  background: #f2a7a57a;
-  transform: rotate(-12deg);
-}
-#oe-roadster .oe-album:nth-child(2) .oe-album-art {
-  background:
-    radial-gradient(circle at 50% 15%, #e6a36c, transparent 40%),
-    linear-gradient(165deg, #26122b, #121e32);
-}
-#oe-roadster .oe-album:nth-child(3) .oe-album-art {
-  background: repeating-linear-gradient(
-    115deg,
-    #101a29 0 14px,
-    #6a5e7a 15px,
-    #101a29 17px
-  );
-}
-#oe-roadster .oe-album:nth-child(4) .oe-album-art {
-  background:
-    radial-gradient(ellipse at 35% 70%, #b5577f, transparent 45%),
-    linear-gradient(45deg, #0b1b26, #172940);
-}
-#oe-roadster .oe-album:nth-child(5) .oe-album-art {
-  background: linear-gradient(
-    135deg,
-    #14182a 40%,
-    #df7a65 41%,
-    #943640 47%,
-    #1c1028 48%
-  );
-}
-#oe-roadster .oe-album strong {
-  display: block;
-  font-size: 11px;
-  font-weight: 400;
-  margin-top: 7px;
-  overflow-wrap: anywhere;
-}
-#oe-roadster .oe-album small {
-  font-size: 11px;
+#oe-roadster .oe-fault-empty > p:not(.oe-label) {
   color: var(--oe-muted);
+  font-size: 12px;
+  margin-top: 12px;
+  max-width: 350px;
+}
+#oe-roadster .oe-diagnostics-status {
+  padding-top: 8px;
 }
 #oe-roadster .oe-drive-grid {
   display: grid;
@@ -934,20 +719,11 @@ body {
   #oe-roadster .oe-context {
     padding: 25px 18px 20px;
   }
-  #oe-roadster .oe-footer-player {
+  #oe-roadster .oe-connection {
     width: 220px;
-    padding: 0 12px;
-  }
-  #oe-roadster .oe-player-track strong {
-    max-width: 90px;
+    padding: 12px;
   }
   #oe-roadster .oe-link-state {
-    display: none;
-  }
-  #oe-roadster .oe-listen-hero {
-    grid-template-columns: 150px minmax(0, 1fr);
-  }
-  #oe-roadster .oe-listen-end {
     display: none;
   }
   #oe-roadster .oe-nav button {
@@ -973,8 +749,7 @@ body {
     gap: 10px;
     height: 48px;
   }
-  #oe-roadster .oe-model,
-  #oe-roadster .oe-clock {
+  #oe-roadster .oe-model {
     display: none;
   }
   #oe-roadster .oe-brand {
@@ -998,44 +773,25 @@ body {
     border-top: 1px solid var(--oe-line);
     border-right: 0;
   }
-  #oe-roadster .oe-context #oe-overview {
-    display: grid;
-    grid-template-columns: 105px minmax(0, 1fr);
-    gap: 0 18px;
+  #oe-roadster .oe-connection {
+    width: 100%;
+    min-height: 58px;
+    padding: 12px 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--oe-line-soft);
+  }
+  #oe-roadster .oe-diagnostics-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  #oe-roadster .oe-fault-empty {
+    padding: 22px;
   }
   #oe-roadster .oe-context-title {
-    grid-column: 1/-1;
     margin-bottom: 15px;
-  }
-  #oe-roadster .oe-context #oe-overview .oe-cover {
-    grid-column: 1;
-    grid-row: 2/7;
-  }
-  #oe-roadster .oe-context #oe-overview .oe-track-title {
-    margin-top: 0;
-  }
-  #oe-roadster .oe-media-buttons {
-    margin-top: 5px;
-    justify-content: start;
-  }
-  #oe-roadster .oe-media-line {
-    margin-top: 9px;
   }
   #oe-roadster .oe-footer {
     flex-wrap: wrap;
-  }
-  #oe-roadster .oe-footer-player {
-    width: 100%;
-    min-height: 58px;
-    border-right: 0;
-    border-bottom: 1px solid var(--oe-line-soft);
-    padding: 0 18px;
-  }
-  #oe-roadster .oe-player-track strong {
-    max-width: 160px;
-  }
-  #oe-roadster .oe-footer-player .oe-media-buttons {
-    gap: 12px;
   }
   #oe-roadster .oe-nav {
     flex-basis: 100%;
@@ -1055,24 +811,6 @@ body {
   }
   #oe-roadster .oe-page-head {
     margin-bottom: 19px;
-  }
-  #oe-roadster .oe-listen-hero {
-    grid-template-columns: 110px minmax(0, 1fr);
-    gap: 18px;
-  }
-  #oe-roadster .oe-listen-hero h2 {
-    font-size: 27px;
-  }
-  #oe-roadster .oe-listen-hero .oe-action {
-    margin-top: 12px;
-    min-width: 110px;
-  }
-  #oe-roadster .oe-recents {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px 10px;
-  }
-  #oe-roadster .oe-album-art {
-    height: 70px;
   }
   #oe-roadster .oe-drive-grid {
     grid-template-columns: 1fr 1fr;
@@ -1122,11 +860,6 @@ body {
   }
 }
 @media (pointer: coarse) {
-  #oe-roadster .oe-icon-button,
-  #oe-roadster .oe-footer-player .oe-icon-button {
-    width: 44px;
-    height: 44px;
-  }
   #oe-roadster .oe-camera button {
     min-height: 44px;
     min-width: 44px;
