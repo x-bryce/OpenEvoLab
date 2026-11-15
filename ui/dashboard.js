@@ -4,23 +4,13 @@
   const state = {
     page: "home",
     part: null,
-    playing: false,
-    track: 0,
     trunkOpen: false,
     lightsOn: false,
     data: "demo",
     units: "c",
   };
   const appearance = { accent: "#f12c35", grid: true };
-  const tracks = [
-    "After Hours",
-    "Chrome Coast",
-    "Concrete Lines",
-    "Lowlight",
-    "Long Way Home",
-  ];
   const readings = {
-    speed: "0",
     fuel: "62%",
     oil: 96,
     coolant: 87,
@@ -40,20 +30,15 @@
   if (
     saved &&
     saved.privateContent &&
-    saved.privateContent.dashboard === "roadster-f36"
+    ["roadster-f36", "vehicle-f36"].includes(saved.privateContent.dashboard)
   ) {
     const previous = saved.privateContent;
-    if (["home", "listen", "drive", "settings"].includes(previous.page))
+    if (["home", "monitor", "diagnostics", "settings"].includes(previous.page))
       state.page = previous.page;
+    if (previous.page === "drive") state.page = "monitor";
     if (["demo", "stale", "unavailable"].includes(previous.data))
       state.data = previous.data;
     if (["c", "f"].includes(previous.units)) state.units = previous.units;
-    if (
-      Number.isInteger(previous.track) &&
-      previous.track >= 0 &&
-      previous.track < tracks.length
-    )
-      state.track = previous.track;
     if (["trunk", "doors", "engine", "lights"].includes(previous.part))
       state.part = previous.part;
     state.trunkOpen = previous.trunkOpen === true;
@@ -68,11 +53,10 @@
   }
   function save() {
     const preferences = {
-      dashboard: "roadster-f36",
+      dashboard: "vehicle-f36",
       page: state.page,
       data: state.data,
       units: state.units,
-      track: state.track,
       part: state.part,
       trunkOpen: state.trunkOpen,
       lightsOn: state.lightsOn,
@@ -85,11 +69,16 @@
   }
   function page(name) {
     state.page = name;
-    ["home", "listen", "drive", "settings"].forEach(function (id) {
+    ["home", "monitor", "diagnostics", "settings"].forEach(function (id) {
       root.querySelector("#oe-" + id).hidden = id !== name;
     });
     root.querySelectorAll("[data-page]").forEach(function (button) {
-      button.setAttribute("aria-current", String(button.dataset.page === name));
+      button.setAttribute(
+        "aria-current",
+        String(
+          button.closest(".oe-nav") !== null && button.dataset.page === name,
+        ),
+      );
     });
     if (carView) carView.resize();
   }
@@ -129,29 +118,6 @@
     root.querySelector("#oe-data-state").value = state.data;
     root.querySelector("#oe-units").value = state.units;
   }
-  function renderMusic() {
-    root.querySelectorAll("[data-track-title]").forEach(function (el) {
-      el.textContent = tracks[state.track];
-    });
-    root.querySelectorAll("[data-play]").forEach(function (button) {
-      button.setAttribute("aria-pressed", String(state.playing));
-      button.setAttribute(
-        "aria-label",
-        state.playing ? "Pause demo track" : "Play demo track",
-      );
-      const isFull = button.classList.contains("oe-action");
-      button.innerHTML =
-        '<i data-lucide="' +
-        (state.playing ? "pause" : "play") +
-        '" aria-hidden="true"></i>' +
-        (isFull
-          ? "<span>" +
-            (state.playing ? "Pause preview" : "Play preview") +
-            "</span>"
-          : "");
-    });
-    icons();
-  }
   const descriptions = {
     trunk: {
       icon: "door-open",
@@ -183,7 +149,7 @@
       title: "Powertrain",
       caption: "B58 / inline-six",
       description:
-        "Thermal readings and engine speed are available in the Drive preview.",
+        "Thermal readings and engine speed are available in the Monitor preview.",
       rows: [
         ["Oil temperature", "96 °C · demo"],
         ["Coolant", "87 °C · demo"],
@@ -191,6 +157,12 @@
     },
   };
   function renderDetail() {
+    root.querySelector("[data-overview-hatch]").textContent = state.trunkOpen
+      ? "Open · preview"
+      : "Closed · preview";
+    root.querySelector("[data-overview-lights]").textContent = state.lightsOn
+      ? "On · preview"
+      : "Off · preview";
     root.querySelector("#oe-overview").hidden = !!state.part;
     const detail = root.querySelector("#oe-detail");
     detail.hidden = !state.part;
@@ -253,7 +225,7 @@
         '<button class="oe-action" disabled>Vehicle control unavailable</button>';
     if (state.part === "engine")
       action =
-        '<button class="oe-action" data-go-drive><i data-lucide="gauge" aria-hidden="true"></i>View telemetry</button>';
+        '<button class="oe-action" data-go-monitor><i data-lucide="gauge" aria-hidden="true"></i>View telemetry</button>';
     detail.innerHTML =
       '<button class="oe-back" data-back><i data-lucide="arrow-left" aria-hidden="true"></i>Overview</button><p class="oe-label">' +
       d.caption +
@@ -291,8 +263,8 @@
       page("settings");
       save();
     }
-    if (button.hasAttribute("data-go-drive")) {
-      page("drive");
+    if (button.hasAttribute("data-go-monitor")) {
+      page("monitor");
       save();
     }
     if (button.dataset.part) {
@@ -312,28 +284,6 @@
       root.querySelectorAll("[data-camera]").forEach(function (b) {
         b.setAttribute("aria-pressed", String(b === button));
       });
-    }
-    if (button.hasAttribute("data-play")) {
-      state.playing = !state.playing;
-      renderMusic();
-      announce(
-        state.playing
-          ? "Demo playback selected. No audio source is connected."
-          : "Demo playback paused.",
-      );
-      save();
-    }
-    if (button.dataset.skip) {
-      state.track =
-        (state.track + Number(button.dataset.skip) + tracks.length) %
-        tracks.length;
-      renderMusic();
-      save();
-    }
-    if (button.hasAttribute("data-track")) {
-      state.track = Number(button.dataset.track);
-      renderMusic();
-      save();
     }
     if (button.dataset.preview === "trunk") {
       state.trunkOpen = !state.trunkOpen;
@@ -373,7 +323,7 @@
     save();
   });
   page(state.page);
-  renderMusic();
+  icons();
   renderReadings();
   renderDetail();
   function buildCar() {

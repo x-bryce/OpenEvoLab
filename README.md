@@ -8,7 +8,7 @@ Free, cross-platform **read-only** BMW ENET/HSFZ diagnostic research tools, with
 
 ## Dashboard preview
 
-The [interactive dashboard draft](ui/README.md) includes a glossy black F36-inspired Gran Coupe model, simulated telemetry and media, and preview-only trunk and lighting controls. It runs locally with Python's static server and bundled browser assets.
+The [interactive dashboard draft](ui/README.md) focuses on vehicle systems, monitoring, diagnostics, and connection status, with a glossy black F36-inspired Gran Coupe model and preview-only trunk and lighting controls. It runs locally with Python's static server and bundled browser assets.
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1 --directory ui
